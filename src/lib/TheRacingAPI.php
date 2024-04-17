@@ -187,12 +187,12 @@ class TheRacingAPI
     /**
      * Build out the races data for a specific meeting.
      */
-    private function getRaces($meeting) 
+    private function getRaces($race) 
     {
         $races = [];
     
         // Map through races in meeting.
-        foreach ($meeting as $race) {
+        // foreach ($meeting as $race) {
             $runners = $this->getRunners($race['runners'], $race['race_id']);
     
             $races[] = [
@@ -210,7 +210,7 @@ class TheRacingAPI
                 'starts_at' => $this->convertToGBTime($race['off_dt']),
                 'runners' => $runners,
             ];
-        }
+        // }
     
         return $races;
     }
