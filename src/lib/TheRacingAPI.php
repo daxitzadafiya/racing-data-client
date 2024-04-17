@@ -5,8 +5,10 @@ namespace RacingPackage\lib;
 use DateTime;
 use DateTimeZone;
 use Exception;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use RacingPackage\traits\ClientTrait;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Promise\Promise;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
@@ -14,18 +16,72 @@ require_once __DIR__ . '/../config/constant.php';
 
 class TheRacingAPI
 {
-    use ClientTrait;
+    private $base_url;
+    private $app_username;
+    private $app_password;
 
-    protected $base_url;
-
-    public function __construct()
+    public function setConfiguration($base_url, $credentials)
     {
-        $this->base_url = BASE_URL;
+        $this->base_url = $base_url;
+        $this->app_username = $credentials['username'];
+        $this->app_password = $credentials['password'];
+    }
+
+    public function fetchDataFromAPI($url, $method)
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->request($method, $url, [
+                'auth' => [$this->app_username, $this->app_password]
+            ]);
+    
+            // Check if the response status code is 200 (OK)
+            if ($response->getStatusCode() === 200) {
+                return json_decode($response->getBody(), true);
+            }
+    
+            // Return some error message or code if not 200
+            return "Error: " . $response->getStatusCode();
+    
+        } catch (GuzzleException $e) {
+            // Handle the exception
+            return "Request failed: " . $e->getMessage();
+        }
+    }
+
+    public function fetchMeetingData($url, $method) 
+    {
+        $callback = [];
+
+        $client = new Client();
+
+        // Initiate asynchronous requests
+        $promiseRaces = $client->requestAsync('GET', $url[0], $callback);
+        $promiseForm = $client->requestAsync('GET', $url[1], $callback);
+        $promiseRunners = $client->requestAsync('GET', $url[2], $callback);
+
+        // Wait for all promises to complete and get the responses
+        $responses = Promise\unwrap([$promiseRaces, $promiseForm, $promiseRunners]);
+
+        // Decode JSON from each response
+        $races = json_decode($responses[0]->getBody(), true);
+        $form = json_decode($responses[1]->getBody(), true);
+        $runners = json_decode($responses[2]->getBody(), true);
+
+        // Package into a keyed array
+        $resultArray = [
+            'races' => $races,
+            'forms' => $form,
+            'runners' => $runners,
+        ];
+
+        return $resultArray;
     }
 
     /**
      * Fetch data from the API.
-     */
+    */
     public function getTodaysMeetings() 
     {
         try {
@@ -186,7 +242,7 @@ class TheRacingAPI
 
     /**
      * Build out the races data for a specific meeting.
-     */
+    */
     private function getRaces($race) 
     {
         $races = [];
@@ -227,10 +283,10 @@ class TheRacingAPI
      *
      * @param string $date YYYY-MM-DD date string.
      * @return array All results for every meeting/race on a specific date.
-     */
+    */
     public function getResultsByRegion(string $region): array
     {
-        return $this->fetchDataFromAPI(BASE_URL . 'results/today?region=' . $region, 'get');
+        return $this->fetchDataFromAPI($this->base_url . 'results/today?region=' . $region, 'get');
     }
 
     /**
@@ -238,7 +294,7 @@ class TheRacingAPI
      *
      * @param int $id The race ID.
      * @return array The results for a specific race.
-     */
+    */
     public function getResultsById(int $id): array
     {
         try {
@@ -270,7 +326,7 @@ class TheRacingAPI
 
     /**
      * Build out the races data for a specific meeting.
-     */
+    */
     private function getRunners($runners, $raceID)
     {
         $result = [];
