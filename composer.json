@@ -1,0 +1,17 @@
+{
+    "name": "racing/package",
+    "description": "A simple utility for generating random strings",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daxit Zadafiya",
+            "email": "daxitzadafiya.work@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "RacingPackage\\": "src/"
+        }
+    }
+}
