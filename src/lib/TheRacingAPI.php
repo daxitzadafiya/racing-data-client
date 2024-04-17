@@ -12,8 +12,6 @@ use GuzzleHttp\Promise\Promise;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
-require_once __DIR__ . '/../config/constant.php';
-
 class TheRacingAPI
 {
     private $base_url;
