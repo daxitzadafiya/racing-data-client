@@ -2,6 +2,7 @@
 
 namespace RacingPackage\lib;
 
+use App\CredentialStrategy;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -15,14 +16,20 @@ use Throwable;
 class TheRacingAPI
 {
     private $base_url;
-    private $app_username;
-    private $app_password;
+    private $auth_credentials;
+    private $strategy;
+
+    public function __construct(CredentialStrategy $strategy)
+    {
+        $this->strategy = $strategy;
+    }
 
     public function setConfiguration($base_url, $credentials)
     {
-        $this->base_url = $base_url;
-        $this->app_username = $credentials['username'];
-        $this->app_password = $credentials['password'];
+        $response = $this->strategy->setCredentials($base_url, $credentials);
+        
+        $this->base_url = $response['base_url'];
+        $this->auth_credentials = $response['auth']; 
     }
 
     public function fetchDataFromAPI($url, $method)
@@ -31,7 +38,7 @@ class TheRacingAPI
 
         try {
             $response = $client->request($method, $url, [
-                'auth' => [$this->app_username, $this->app_password]
+                'auth' => $this->auth_credentials
             ]);
     
             // Check if the response status code is 200 (OK)
