@@ -2,7 +2,6 @@
 
 namespace RacingPackage\lib;
 
-use App\CredentialStrategy;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -10,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\Promise;
+use RacingPackage\app\CredentialStrategy;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
