@@ -19,6 +19,7 @@
         "guzzlehttp/guzzle": "^7.8",
         "guzzlehttp/promises": "^2.0",
         "ramsey/uuid": "^4.7",
-        "illuminate/support": "^11.4"
+        "illuminate/support": "^11.4",
+        "phpoption/phpoption": "^1.9"
     }
 }

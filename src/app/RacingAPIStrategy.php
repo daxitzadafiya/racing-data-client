@@ -2,15 +2,13 @@
 
 namespace RacingPackage\app;
 
-use Illuminate\Support\Facades\Config;
-
 class RacingAPIStrategy implements CredentialStrategy
 {
     protected $config;
 
     public function __construct()
     {
-        $this->config = Config::get('racing.default');
+        $this->config = require_once __DIR__ . "/../config/racing.php";
     }
 
     public function setCredentials(): array

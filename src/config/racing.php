@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'default' => env('RACING_API_DEFAULT', 'racing'),
+    'default' => getenv('RACING_API_DEFAULT'),
     'racing' => [
         'driver' => 'racing',
-        "base_url" => env('RACING_API_BASE_URL', 'https://api.theracingapi.com/v1/'),
+        "base_url" => getenv('RACING_API_BASE_URL'),
         'credentials' => [
-            "username" => env('RACING_API_USERNAME', 'GLbMje7eIZPuloW6h1VrQqyD'),
-            "password" => env('RACING_API_PASSWORD', 'f36A4je27Lit4oIUtzBrDkU7')
+            "username" => getenv('RACING_API_USERNAME'),
+            "password" => getenv('RACING_API_PASSWORD')
         ]
     ]
 ];
