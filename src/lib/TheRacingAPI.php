@@ -26,9 +26,9 @@ class TheRacingAPI
         $this->client = new Client();
     }
 
-    public function setConfiguration($base_url, $credentials)
+    public function setConfiguration()
     {
-        $response = $this->strategy->setCredentials($base_url, $credentials);
+        $response = $this->strategy->setCredentials();
         
         $this->base_url = $response['base_url'];
         $this->auth_credentials = $response['auth']; 
