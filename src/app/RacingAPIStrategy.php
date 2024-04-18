@@ -2,17 +2,24 @@
 
 namespace RacingPackage\app;
 
+use Illuminate\Support\Facades\Config;
+
 class RacingAPIStrategy implements CredentialStrategy
 {
+    protected $config;
+
+    public function __construct()
+    {
+        $this->config = Config::get('racing.default');
+    }
+
     public function setCredentials(): array
     {
-        $config = require_once __DIR__ . "/../config/racing.php";
-
         return [
-            "base_url" => $config['configurations'][$config['default']]['base_url'],
+            "base_url" => $this->config[$this->config['default']]['base_url'],
             "auth" => [
-                $config['configurations'][$config['default']]['credentials']['username'],
-                $config['configurations'][$config['default']]['credentials']['password']
+                $this->config[$this->config['default']]['credentials']['username'],
+                $this->config[$this->config['default']]['credentials']['password']
             ]
         ];
     }
