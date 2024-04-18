@@ -18,10 +18,12 @@ class TheRacingAPI
     private $base_url;
     private $auth_credentials;
     private $strategy;
+    private $client;
 
     public function __construct(CredentialStrategy $strategy)
     {
         $this->strategy = $strategy;
+        $this->client = new Client();
     }
 
     public function setConfiguration($base_url, $credentials)
@@ -34,10 +36,8 @@ class TheRacingAPI
 
     public function fetchDataFromAPI($url, $method)
     {
-        $client = new Client();
-
         try {
-            $response = $client->request($method, $url, [
+            $response = $this->client->request($method, $url, [
                 'auth' => $this->auth_credentials
             ]);
     
@@ -59,12 +59,10 @@ class TheRacingAPI
     {
         $callback = [];
 
-        $client = new Client();
-
         // Initiate asynchronous requests
-        $promiseRaces = $client->requestAsync('GET', $url[0], $callback);
-        $promiseForm = $client->requestAsync('GET', $url[1], $callback);
-        $promiseRunners = $client->requestAsync('GET', $url[2], $callback);
+        $promiseRaces = $this->client->requestAsync('GET', $url[0], $callback);
+        $promiseForm = $this->client->requestAsync('GET', $url[1], $callback);
+        $promiseRunners = $this->client->requestAsync('GET', $url[2], $callback);
 
         // Wait for all promises to complete and get the responses
         $responses = Promise\unwrap([$promiseRaces, $promiseForm, $promiseRunners]);
