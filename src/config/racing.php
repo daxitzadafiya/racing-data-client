@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => env('RACING_API_DEFAULT', 'racing'),
+    'default' => env('RACING_API_DRIVER', 'racing'),
     'racing' => [
         'driver' => 'racing',
         "base_url" => env('RACING_API_BASE_URL', 'https://api.theracingapi.com/v1/'),
