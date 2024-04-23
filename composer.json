@@ -20,7 +20,7 @@
                 "RacingPackage\\RacingServiceProvider"
             ],
             "aliases": {
-                "RacingPackage": "RacingPackage\\Facades\\RacingAPIFacade"
+                "RacingAPI": "RacingPackage\\Facades\\RacingAPIFacade"
             }
         }
     },

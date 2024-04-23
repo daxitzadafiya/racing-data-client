@@ -33,15 +33,15 @@ class RacingAPIManager extends Manager implements Factory
     }
 
     /**
-     * Create a NullClient instance.
+     * Create a RacingAPIClient instance.
      *
      * @return \RacingPackage\Clients\RacingAPIClient
      */
-    public function createNullDriver(): RacingAPIClient
+    public function createRacingDriver(): RacingAPIClient
     {
         $this->ensureHttpClientIsInstalled();
 
-        return $this->buildProvider(RacingAPIClient::class, $this->getConfig());
+        return $this->buildProvider(RacingAPIClient::class, $this->getConfig('racing'));
     }
 
     /**
@@ -101,7 +101,7 @@ class RacingAPIManager extends Manager implements Factory
     protected function ensureHttpClientIsInstalled(): void
     {
         // The HTTP clients namespace.
-        $namespace = '\\Fanwave\\DataAPI\\HttpClients\\';
+        $namespace = '\\RacingPackage\\HttpClients\\';
 
         // The HTTP client from the config.
         $client = 'Guzzle';

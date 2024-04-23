@@ -41,7 +41,6 @@ abstract class Client implements ClientInterface
      */
     public function request(string $method, string|array $resource, array $options = []): Collection
     {
-        // echo '<pre>'; print_r("hello"); exit();
         try {
             // Build the request URL and perform the request.
             $response = $this->client->{$method}($this->buildUrl($resource), $options);

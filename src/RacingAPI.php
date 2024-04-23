@@ -7,6 +7,7 @@ use RacingPackage\Config\Config;
 use RacingPackage\Exceptions\EnvironmentFileNotFoundException;
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
+use RacingPackage\Contracts\HttpClientInterface;
 
 class RacingAPI extends Container
 {
@@ -57,7 +58,6 @@ class RacingAPI extends Container
             return $this->map(function ($value) {
                 if (is_array($value) || is_object($value)) {
                     $subCollection = new Collection($value);
-
                     $subCollection->recursive();
                 }
 
@@ -112,6 +112,9 @@ class RacingAPI extends Container
         $this->singleton(RacingAPIManager::class, function ($app) {
             return new RacingAPIManager($app);
         });
+
+        // Bind the HTTP client interface to the container.
+        $this->bind(HttpClientInterface::class, 'RacingPackage\\HttpClients\\Guzzle');
     }
 
     /**

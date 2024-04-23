@@ -55,7 +55,7 @@ class RacingAPIClient extends Client implements ClientInterface
     public function getTomorrowsMeetings() 
     {
         try {
-            $tomorrowRaceCards = $this->request('get', 'https://api.theracingapi.com/v1/racecards/standard?day=tomorrow', $this->options);
+            $tomorrowRaceCards = $this->request('get', 'racecards/standard?day=tomorrow', $this->options);
 
             $meetings = [];
             $convertedMeetings = [];
@@ -294,5 +294,19 @@ class RacingAPIClient extends Client implements ClientInterface
         }
         
         return $result;
+    }
+
+    /**
+     * Build the request URL.
+     *
+     * @param  string|array  $resource  The API resource.
+     * @return string
+     */
+    public function buildUrl(string|array $resource): string
+    {
+        $uri = is_array($resource) ? $resource[0] : $resource;
+        $resource = is_array($resource) ? $resource[1] : '';
+
+        return parent::buildUrl($uri.'/'.$this->config['base_url']).'/'.$resource;
     }
 }
