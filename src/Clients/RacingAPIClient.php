@@ -1,85 +1,26 @@
 <?php
 
-namespace RacingPackage\lib;
+namespace RacingPackage\Clients;
 
 use DateTime;
 use DateTimeZone;
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Promise\Promise;
-use RacingPackage\app\CredentialStrategy;
+use RacingPackage\Contracts\ClientInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
-class TheRacingAPI
+class RacingAPIClient extends Client implements ClientInterface
 {
-    private $base_url;
-    private $auth_credentials;
-    private $strategy;
-    private $client;
+    protected $options;
 
-    public function __construct(CredentialStrategy $strategy)
+    public function __construct()
     {
-        $this->strategy = $strategy;
-        $this->client = new Client();
-    }
-
-    public function setConfiguration()
-    {
-        $response = $this->strategy->setCredentials();
-        
-        $this->base_url = $response['base_url'];
-        $this->auth_credentials = $response['auth']; 
-    }
-
-    public function fetchDataFromAPI($url, $method)
-    {
-        try {
-            $response = $this->client->request($method, $url, [
-                'auth' => $this->auth_credentials
-            ]);
-    
-            // Check if the response status code is 200 (OK)
-            if ($response->getStatusCode() === 200) {
-                return json_decode($response->getBody(), true);
-            }
-    
-            // Return some error message or code if not 200
-            return "Error: " . $response->getStatusCode();
-    
-        } catch (GuzzleException $e) {
-            // Handle the exception
-            return "Request failed: " . $e->getMessage();
-        }
-    }
-
-    public function fetchMeetingData($url, $method) 
-    {
-        $callback = [];
-
-        // Initiate asynchronous requests
-        $promiseRaces = $this->client->requestAsync('GET', $url[0], $callback);
-        $promiseForm = $this->client->requestAsync('GET', $url[1], $callback);
-        $promiseRunners = $this->client->requestAsync('GET', $url[2], $callback);
-
-        // Wait for all promises to complete and get the responses
-        $responses = Promise\unwrap([$promiseRaces, $promiseForm, $promiseRunners]);
-
-        // Decode JSON from each response
-        $races = json_decode($responses[0]->getBody(), true);
-        $form = json_decode($responses[1]->getBody(), true);
-        $runners = json_decode($responses[2]->getBody(), true);
-
-        // Package into a keyed array
-        $resultArray = [
-            'races' => $races,
-            'forms' => $form,
-            'runners' => $runners,
+        $this->options = [
+            'auth' => [
+                "username" => env('RACING_API_USERNAME'),
+                "password" => env('RACING_API_PASSWORD')
+            ]
         ];
-
-        return $resultArray;
     }
 
     /**
@@ -87,39 +28,34 @@ class TheRacingAPI
     */
     public function getTodaysMeetings() 
     {
-        try {
-            $todaysRaceCards = $this->fetchDataFromAPI($this->base_url . 'racecards/standard', 'get');
+        $todaysRaceCards = $this->request('get', 'racecards/standard', $this->options);
 
-            $meetings = [];
-            $convertedMeetings = [];
+        $meetings = [];
+        $convertedMeetings = [];
 
-            // Group raceCards by course name.
-            foreach ($todaysRaceCards['racecards'] as $raceCard) {
-                $course = $raceCard['course'];
+        // Group raceCards by course name.
+        foreach ($todaysRaceCards['racecards'] as $raceCard) {
+            $course = $raceCard['course'];
 
-                if (!isset($meetings[$course])) {
-                    $meetings[$course] = [];
-                }
-
-                $meetings[$course][] = $raceCard;
+            if (!isset($meetings[$course])) {
+                $meetings[$course] = [];
             }
 
-            // Iterate through converted meetings and push to $convertedMeetings.
-            foreach ($meetings as $course => $raceCards) {
-                $convertedMeetings[] = $this->getMeetings($raceCards);
-            }
-
-            return $convertedMeetings;
-
-        } catch (Throwable $th) {
-            throw $th;
+            $meetings[$course][] = $raceCard;
         }
+
+        // Iterate through converted meetings and push to $convertedMeetings.
+        foreach ($meetings as $course => $raceCards) {
+            $convertedMeetings[] = $this->getMeetings($raceCards);
+        }
+
+        return $convertedMeetings;
     }
 
     public function getTomorrowsMeetings() 
     {
         try {
-            $tomorrowRaceCards = $this->fetchDataFromAPI($this->base_url . 'racecards/standard?day=tomorrow', 'get');
+            $tomorrowRaceCards = $this->request('get', 'https://api.theracingapi.com/v1/racecards/standard?day=tomorrow', $this->options);
 
             $meetings = [];
             $convertedMeetings = [];
@@ -287,9 +223,9 @@ class TheRacingAPI
      * @param string $date YYYY-MM-DD date string.
      * @return array All results for every meeting/race on a specific date.
     */
-    public function getResultsByRegion(string $region): array
+    public function getResultsByRegion(string $region)
     {
-        return $this->fetchDataFromAPI($this->base_url . 'results/today?region=' . $region, 'get');
+        return $this->request('get', 'https://api.theracingapi.com/v1/results/today?region=' . $region, $this->options);
     }
 
     /**
@@ -298,16 +234,9 @@ class TheRacingAPI
      * @param int $id The race ID.
      * @return array The results for a specific race.
     */
-    public function getResultsById(int $id): array
+    public function getResultsById(int $id)
     {
-        try {
-            return $this->fetchDataFromAPI($this->base_url . 'results/rac_' . $id, 'get');
-        } catch (ClientException $e) {
-            return [
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
-        }
+        return $this->request('get', 'https://api.theracingapi.com/v1/results/rac_' . $id, $this->options);
     }
 
     /**

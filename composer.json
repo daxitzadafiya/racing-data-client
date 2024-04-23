@@ -11,15 +11,17 @@
     ],
     "autoload": {
         "psr-4": {
-            "RacingPackage\\": "src/",
-            "App\\": "app/"
+            "RacingPackage\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
                 "RacingPackage\\RacingServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "RacingPackage": "RacingPackage\\Facades\\RacingAPIFacade"
+            }
         }
     },
     "require": {
