@@ -1,6 +1,6 @@
 {
-    "name": "racing/package",
-    "description": "This Package will help to retrieve records from third party services",
+    "name": "racing/data",
+    "description": "This Package will help you to fetch the data based on driver.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -11,13 +11,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "RacingPackage\\": "src/"
+            "RacingData\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "RacingPackage\\RacingAPIServiceProvider"
+                "RacingData\\RacingAPIServiceProvider"
             ]
         }
     },

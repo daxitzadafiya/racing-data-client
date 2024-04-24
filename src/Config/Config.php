@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingPackage\Config;
+namespace RacingData\Config;
 
 use Illuminate\Config\Repository;
 use Symfony\Component\Finder\Finder;

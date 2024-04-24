@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingPackage\Contracts;
+namespace RacingData\Contracts;
 
 use Exception;
 use Illuminate\Support\Collection;
@@ -33,11 +33,11 @@ interface ClientInterface
      * @param  int  $code  The exception error code.
      * @param  string  $message  The exception message.
      *
-     * @throws \RacingPackage\Exceptions\BadRequestException
-     * @throws \RacingPackage\Exceptions\ClientException
-     * @throws \RacingPackage\Exceptions\MethodNotAllowedException
-     * @throws \RacingPackage\Exceptions\TooManyRequestsException
-     * @throws \RacingPackage\Exceptions\UnauthorisedRequestException
+     * @throws \RacingData\Exceptions\BadRequestException
+     * @throws \RacingData\Exceptions\ClientException
+     * @throws \RacingData\Exceptions\MethodNotAllowedException
+     * @throws \RacingData\Exceptions\TooManyRequestsException
+     * @throws \RacingData\Exceptions\UnauthorisedRequestException
      */
     public function throwException(int $code, string $message);
 }

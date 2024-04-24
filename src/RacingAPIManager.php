@@ -1,15 +1,15 @@
 <?php
 
-namespace RacingPackage;
+namespace RacingData;
 
-use RacingPackage\Clients\Client;
-use RacingPackage\Contracts\Factory;
-use RacingPackage\Contracts\HttpClientInterface;
-use RacingPackage\Exceptions\DriverNotConfiguredException;
+use RacingData\Clients\Client;
+use RacingData\Contracts\Factory;
+use RacingData\Contracts\HttpClientInterface;
+use RacingData\Exceptions\DriverNotConfiguredException;
 use Illuminate\Support\Manager;
-use RacingPackage\Clients\RacingAPIClient;
-use RacingPackage\Exceptions\HttpClientNotFoundException;
-use RacingPackage\Utilities\Helpers;
+use RacingData\Clients\RacingAPIClient;
+use RacingData\Exceptions\HttpClientNotFoundException;
+use RacingData\Utilities\Helpers;
 
 class RacingAPIManager extends Manager implements Factory
 {
@@ -26,7 +26,7 @@ class RacingAPIManager extends Manager implements Factory
      * Get a data provider implementation.
      *
      * @param  null|string  $driver
-     * @return \RacingPackage\Contracts\ClientInterface
+     * @return \RacingData\Contracts\ClientInterface
      */
     public function with(null|string $driver = null)
     {
@@ -36,7 +36,7 @@ class RacingAPIManager extends Manager implements Factory
     /**
      * Create a RacingAPIClient instance.
      *
-     * @return \RacingPackage\Clients\RacingAPIClient
+     * @return \RacingData\Clients\RacingAPIClient
      */
     public function createRacingDriver(): RacingAPIClient
     {
@@ -50,7 +50,7 @@ class RacingAPIManager extends Manager implements Factory
      *
      * @param  string  $provider
      * @param  array  $config
-     * @return \RacingPackage\Clients\Client
+     * @return \RacingData\Clients\Client
      */
     public function buildProvider(string $provider, array $config): Client
     {
@@ -79,7 +79,7 @@ class RacingAPIManager extends Manager implements Factory
      *
      * @return array
      *
-     * @throws \RacingPackage\Exceptions\DriverNotConfiguredException
+     * @throws \RacingData\Exceptions\DriverNotConfiguredException
      */
     private function getConfig(string|null $driver = null): array
     {
@@ -97,12 +97,12 @@ class RacingAPIManager extends Manager implements Factory
      *
      * @return void
      *
-     * @throws \RacingPackage\Exceptions\HttpClientNotFoundException
+     * @throws \RacingData\Exceptions\HttpClientNotFoundException
      */
     protected function ensureHttpClientIsInstalled(): void
     {
         // The HTTP clients namespace.
-        $namespace = 'RacingPackage\\HttpClients\\';
+        $namespace = 'RacingData\\HttpClients\\';
 
         // The HTTP client from the config.
         $client = 'Guzzle';

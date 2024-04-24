@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingPackage\Utilities;
+namespace RacingData\Utilities;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;

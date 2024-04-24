@@ -1,14 +1,14 @@
 <?php
 
-namespace RacingPackage;
+namespace RacingData;
 
 use Dotenv\Dotenv;
-use RacingPackage\Config\Config;
-use RacingPackage\Exceptions\EnvironmentFileNotFoundException;
+use RacingData\Config\Config;
+use RacingData\Exceptions\EnvironmentFileNotFoundException;
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
-use RacingPackage\Contracts\HttpClientInterface;
-use RacingPackage\Utilities\Helpers;
+use RacingData\Contracts\HttpClientInterface;
+use RacingData\Utilities\Helpers;
 
 class RacingAPI extends Container
 {
@@ -22,7 +22,7 @@ class RacingAPI extends Container
     /**
      * The manager config.
      *
-     * @var \RacingPackage\Config\Config
+     * @var \RacingData\Config\Config
      */
     protected Config $config;
 
@@ -31,7 +31,7 @@ class RacingAPI extends Container
      *
      * @param  array  $paths  The paths to be used for the config.
      *
-     * @throws \RacingPackage\Exceptions\EnvironmentFileNotFoundException
+     * @throws \RacingData\Exceptions\EnvironmentFileNotFoundException
      */
     public function __construct(protected array $paths = [])
     {
@@ -120,7 +120,7 @@ class RacingAPI extends Container
         });
 
         // Bind the HTTP client interface to the container.
-        $this->bind(HttpClientInterface::class, 'RacingPackage\\HttpClients\\Guzzle');
+        $this->bind(HttpClientInterface::class, 'RacingData\\HttpClients\\Guzzle');
     }
 
     /**
@@ -146,7 +146,7 @@ class RacingAPI extends Container
     /**
      * Get a manager instance.
      *
-     * @return \RacingPackage\RacingAPIManager
+     * @return \RacingData\RacingAPIManager
      */
     private function getManagerInstance(): RacingAPIManager
     {

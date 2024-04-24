@@ -1,12 +1,12 @@
 <?php
 
-namespace RacingPackage\Facades;
+namespace RacingData\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use RacingPackage\Contracts\ClientInterface;
+use RacingData\Contracts\ClientInterface;
 
 /**
- * @method static \RacingPackage\Contracts\ClientInterface driver(string $driver = null)
+ * @method static \RacingData\Contracts\ClientInterface driver(string $driver = null)
  *
 */
 class RacingAPIFacade extends Facade

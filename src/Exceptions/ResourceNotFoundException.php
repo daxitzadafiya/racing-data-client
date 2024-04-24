@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingPackage\Exceptions;
+namespace RacingData\Exceptions;
 
 use Exception;
 

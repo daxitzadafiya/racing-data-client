@@ -1,18 +1,18 @@
 <?php
 
-namespace RacingPackage\Clients;
+namespace RacingData\Clients;
 
 use Exception;
-use RacingPackage\Contracts\ClientInterface;
-use RacingPackage\Contracts\HttpClientInterface;
-use RacingPackage\Exceptions\BadRequestException;
-use RacingPackage\Exceptions\ClientException;
-use RacingPackage\Exceptions\MethodNotAllowedException;
-use RacingPackage\Exceptions\ResourceNotFoundException;
-use RacingPackage\Exceptions\TooManyRequestsException;
-use RacingPackage\Exceptions\UnauthorisedRequestException;
+use RacingData\Contracts\ClientInterface;
+use RacingData\Contracts\HttpClientInterface;
+use RacingData\Exceptions\BadRequestException;
+use RacingData\Exceptions\ClientException;
+use RacingData\Exceptions\MethodNotAllowedException;
+use RacingData\Exceptions\ResourceNotFoundException;
+use RacingData\Exceptions\TooManyRequestsException;
+use RacingData\Exceptions\UnauthorisedRequestException;
 use Illuminate\Support\Collection;
-use RacingPackage\Utilities\Helpers;
+use RacingData\Utilities\Helpers;
 
 abstract class Client implements ClientInterface
 {
@@ -20,7 +20,7 @@ abstract class Client implements ClientInterface
      * Create a client instance.
      *
      * @param  array  $config  THe client configuration.
-     * @param  \RacingPackage\Contracts\HttpClientInterface  $client  The HTTP client.
+     * @param  \RacingData\Contracts\HttpClientInterface  $client  The HTTP client.
      */
     public function __construct(protected array $config, protected HttpClientInterface $client, protected Helpers $helpers)
     {
@@ -34,11 +34,11 @@ abstract class Client implements ClientInterface
      * @param  array  $options  Request options.
      * @return \Illuminate\Support\Collection
      *
-     * @throws \RacingPackage\Exceptions\BadRequestException
-     * @throws \RacingPackage\Exceptions\ClientException
-     * @throws \RacingPackage\Exceptions\MethodNotAllowedException
-     * @throws \RacingPackage\Exceptions\TooManyRequestsException
-     * @throws \RacingPackage\Exceptions\UnauthorisedRequestException
+     * @throws \RacingData\Exceptions\BadRequestException
+     * @throws \RacingData\Exceptions\ClientException
+     * @throws \RacingData\Exceptions\MethodNotAllowedException
+     * @throws \RacingData\Exceptions\TooManyRequestsException
+     * @throws \RacingData\Exceptions\UnauthorisedRequestException
      */
     public function request(string $method, string|array $resource, array $options = []): Collection
     {
@@ -71,12 +71,12 @@ abstract class Client implements ClientInterface
      * @param  int  $code  The exception error code.
      * @param  string  $message  The exception message.
      *
-     * @throws \RacingPackage\Exceptions\BadRequestException
-     * @throws \RacingPackage\Exceptions\ClientException
-     * @throws \RacingPackage\Exceptions\MethodNotAllowedException
-     * @throws \RacingPackage\Exceptions\TooManyRequestsException
-     * @throws \RacingPackage\Exceptions\UnauthorisedRequestException
-     * @throws \RacingPackage\Exceptions\ResourceNotFoundException
+     * @throws \RacingData\Exceptions\BadRequestException
+     * @throws \RacingData\Exceptions\ClientException
+     * @throws \RacingData\Exceptions\MethodNotAllowedException
+     * @throws \RacingData\Exceptions\TooManyRequestsException
+     * @throws \RacingData\Exceptions\UnauthorisedRequestException
+     * @throws \RacingData\Exceptions\ResourceNotFoundException
      */
     public function throwException(int $code, string $message)
     {

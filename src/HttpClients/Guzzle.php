@@ -1,8 +1,8 @@
 <?php
 
-namespace RacingPackage\HttpClients;
+namespace RacingData\HttpClients;
 
-use RacingPackage\Contracts\HttpClientInterface;
+use RacingData\Contracts\HttpClientInterface;
 use GuzzleHttp\Client;
 
 class Guzzle extends Client implements HttpClientInterface

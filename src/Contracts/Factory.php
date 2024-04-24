@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingPackage\Contracts;
+namespace RacingData\Contracts;
 
 interface Factory
 {
@@ -8,7 +8,7 @@ interface Factory
      * Get a data provider implementation.
      *
      * @param  null|string  $driver
-     * @return \RacingPackage\Contracts\ClientInterface
+     * @return \RacingData\Contracts\ClientInterface
      */
     public function with(null|string $driver = null);
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace RacingPackage;
+namespace RacingData;
 
-use RacingPackage\Contracts\Factory;
-use RacingPackage\Contracts\HttpClientInterface;
+use RacingData\Contracts\Factory;
+use RacingData\Contracts\HttpClientInterface;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use RacingPackage\Utilities\Helpers;
+use RacingData\Utilities\Helpers;
 
 class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -37,7 +37,7 @@ class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProv
                 return new RacingAPIManager($app);
             });
 
-            $this->app->bind(HttpClientInterface::class, 'RacingPackage\\HttpClients\\Guzzle');
+            $this->app->bind(HttpClientInterface::class, 'RacingData\\HttpClients\\Guzzle');
 
             $this->app->singleton(Helpers::class, function ($app) {
                 return new Helpers;
