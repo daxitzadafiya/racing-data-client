@@ -21,19 +21,6 @@ class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProv
         $this->publishes([
             __DIR__.'/../config/racing.php' => $this->app->configPath('racing.php'),
         ], 'config');
-
-        // Make collections recursive.
-        Collection::macro('recursive', function () {
-            return $this->map(function ($value) {
-                if (is_array($value) || is_object($value)) {
-                    $subCollection = new Collection($value);
-
-                    $subCollection->recursive();
-                }
-
-                return $value;
-            });
-        });
     }
 
     /**
