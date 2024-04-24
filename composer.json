@@ -17,7 +17,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RacingPackage\\RacingServiceProvider"
+                "RacingPackage\\RacingAPIServiceProvider"
             ]
         }
     },

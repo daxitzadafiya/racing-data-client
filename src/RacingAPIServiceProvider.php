@@ -5,7 +5,6 @@ namespace RacingPackage;
 use RacingPackage\Contracts\Factory;
 use RacingPackage\Contracts\HttpClientInterface;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use RacingPackage\Utilities\Helpers;
 
