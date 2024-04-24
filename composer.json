@@ -32,5 +32,6 @@
         "illuminate/config": "^11.4",
         "symfony/finder": "^7.0",
         "nesbot/carbon": "^3.3"
-    }
+    },
+    "minimum-stability": "dev"
 }
