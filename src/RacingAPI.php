@@ -37,7 +37,7 @@ class RacingAPI extends Container
     {
         // Create a new config instance and set the base path.
         $this->config = new Config();
-        $this->basePath = getcwd();
+        $this->basePath = dirname(__FILE__, 5);
 
         // If the environment file does not exist, throw exception.
         if (! $paths && ! file_exists($this->basePath.'/.env')) {
