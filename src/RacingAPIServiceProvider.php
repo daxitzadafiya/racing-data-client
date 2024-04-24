@@ -7,6 +7,7 @@ use RacingPackage\Contracts\HttpClientInterface;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use RacingPackage\Utilities\Helpers;
 
 class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -51,6 +52,10 @@ class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProv
             });
 
             $this->app->bind(HttpClientInterface::class, 'RacingPackage\\HttpClients\\Guzzle');
+
+            $this->app->singleton(Helpers::class, function ($app) {
+                return new Helpers;
+            });
         }
     }
 
@@ -63,7 +68,8 @@ class RacingAPIServiceProvider extends ServiceProvider implements DeferrableProv
     {
         return [
             Factory::class,
-            HttpClientInterface::class
+            HttpClientInterface::class,
+            Helpers::class
         ];
     }
 }

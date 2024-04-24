@@ -8,6 +8,7 @@ use RacingPackage\Exceptions\EnvironmentFileNotFoundException;
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
 use RacingPackage\Contracts\HttpClientInterface;
+use RacingPackage\Utilities\Helpers;
 
 class RacingAPI extends Container
 {
@@ -111,6 +112,11 @@ class RacingAPI extends Container
         // Create the manager singleton.
         $this->singleton(RacingAPIManager::class, function ($app) {
             return new RacingAPIManager($app);
+        });
+
+        // Create the helpers singleton.
+        $this->singleton(Helpers::class, function ($app) {
+            return new Helpers;
         });
 
         // Bind the HTTP client interface to the container.

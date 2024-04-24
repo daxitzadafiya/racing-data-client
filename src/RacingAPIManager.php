@@ -9,6 +9,7 @@ use RacingPackage\Exceptions\DriverNotConfiguredException;
 use Illuminate\Support\Manager;
 use RacingPackage\Clients\RacingAPIClient;
 use RacingPackage\Exceptions\HttpClientNotFoundException;
+use RacingPackage\Utilities\Helpers;
 
 class RacingAPIManager extends Manager implements Factory
 {
@@ -53,7 +54,7 @@ class RacingAPIManager extends Manager implements Factory
      */
     public function buildProvider(string $provider, array $config): Client
     {
-        return new $provider($config, $this->container->make(HttpClientInterface::class));
+        return new $provider($config, $this->container->make(HttpClientInterface::class), $this->container->make(Helpers::class));
     }
 
     /**
@@ -101,7 +102,7 @@ class RacingAPIManager extends Manager implements Factory
     protected function ensureHttpClientIsInstalled(): void
     {
         // The HTTP clients namespace.
-        $namespace = '\\RacingPackage\\HttpClients\\';
+        $namespace = 'RacingPackage\\HttpClients\\';
 
         // The HTTP client from the config.
         $client = 'Guzzle';
