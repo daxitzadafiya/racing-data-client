@@ -1,11 +1,11 @@
 <?php
 
-namespace RacingData\Clients;
+namespace RacingDataClient\Clients;
 
 use DateTime;
 use DateTimeZone;
 use Exception;
-use RacingData\Contracts\ClientInterface;
+use RacingDataClient\Contracts\ClientInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
