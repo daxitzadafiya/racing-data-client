@@ -1,6 +1,6 @@
 {
     "name": "racing/package",
-    "description": "A simple utility for generating random strings",
+    "description": "This Package will help to retrieve records from third party services",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,10 +18,7 @@
         "laravel": {
             "providers": [
                 "RacingPackage\\RacingServiceProvider"
-            ],
-            "aliases": {
-                "RacingAPI": "RacingPackage\\Facades\\RacingAPIFacade"
-            }
+            ]
         }
     },
     "require": {

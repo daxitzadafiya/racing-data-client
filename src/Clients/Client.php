@@ -12,6 +12,7 @@ use RacingPackage\Exceptions\ResourceNotFoundException;
 use RacingPackage\Exceptions\TooManyRequestsException;
 use RacingPackage\Exceptions\UnauthorisedRequestException;
 use Illuminate\Support\Collection;
+use RacingPackage\Utilities\Helpers;
 
 abstract class Client implements ClientInterface
 {
@@ -21,7 +22,7 @@ abstract class Client implements ClientInterface
      * @param  array  $config  THe client configuration.
      * @param  \RacingPackage\Contracts\HttpClientInterface  $client  The HTTP client.
      */
-    public function __construct(protected array $config, protected HttpClientInterface $client)
+    public function __construct(protected array $config, protected HttpClientInterface $client, protected Helpers $helpers)
     {
     }
 
@@ -46,7 +47,7 @@ abstract class Client implements ClientInterface
             $response = $this->client->{$method}($this->buildUrl($resource), $options);
 
             // Return the response collection.
-            return collect(json_decode($response->getBody()->getContents(), true))->recursive();
+            return collect(json_decode($response->getBody()->getContents(), true));
         } catch (Exception $e) {
             return $this->throwException($e->getCode(), $e->getMessage());
         }
@@ -61,7 +62,7 @@ abstract class Client implements ClientInterface
     public function buildUrl(string|array $resource): string
     {
         // Default request URL.
-        return $this->config['base_url'].'/'.$resource;
+        return $this->config['base_url'].$resource;
     }
 
     /**

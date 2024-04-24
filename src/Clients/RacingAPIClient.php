@@ -11,24 +11,12 @@ use Throwable;
 
 class RacingAPIClient extends Client implements ClientInterface
 {
-    protected $options;
-
-    public function __construct()
-    {
-        $this->options = [
-            'auth' => [
-                "username" => env('RACING_API_USERNAME'),
-                "password" => env('RACING_API_PASSWORD')
-            ]
-        ];
-    }
-
     /**
      * Fetch data from the API.
     */
     public function getTodaysMeetings() 
     {
-        $todaysRaceCards = $this->request('get', 'racecards/standard', $this->options);
+        $todaysRaceCards = $this->request("get", "racecards/standard", $this->getDefaultOptions());
 
         $meetings = [];
         $convertedMeetings = [];
@@ -55,7 +43,7 @@ class RacingAPIClient extends Client implements ClientInterface
     public function getTomorrowsMeetings() 
     {
         try {
-            $tomorrowRaceCards = $this->request('get', 'racecards/standard?day=tomorrow', $this->options);
+            $tomorrowRaceCards = $this->request("get", "racecards/standard?day=tomorrow", $this->getDefaultOptions());
 
             $meetings = [];
             $convertedMeetings = [];
@@ -188,7 +176,7 @@ class RacingAPIClient extends Client implements ClientInterface
     
         // Map through races in meeting.
         // foreach ($meeting as $race) {
-            $runners = $this->getRunners($race['runners'], $race['race_id']);
+            $runners = $this->getRunners($race['runners'], $race['race_id'], $this->getDefaultOptions());
     
             $races[] = [
                 'title' => $race['race_name'] ?? "",
@@ -225,7 +213,7 @@ class RacingAPIClient extends Client implements ClientInterface
     */
     public function getResultsByRegion(string $region)
     {
-        return $this->request('get', 'https://api.theracingapi.com/v1/results/today?region=' . $region, $this->options);
+        return $this->request("get", "https://api.theracingapi.com/v1/results/today?region=$region", $this->getDefaultOptions());
     }
 
     /**
@@ -236,7 +224,7 @@ class RacingAPIClient extends Client implements ClientInterface
     */
     public function getResultsById(int $id)
     {
-        return $this->request('get', 'https://api.theracingapi.com/v1/results/rac_' . $id, $this->options);
+        return $this->request("get", "https://api.theracingapi.com/v1/results/rac_$id", $this->getDefaultOptions());
     }
 
     /**
@@ -297,6 +285,23 @@ class RacingAPIClient extends Client implements ClientInterface
     }
 
     /**
+     * Get default options and set format to jsonp.
+     *
+     * @param  array  $options  The passed options.
+     * @return array
+    */
+    private function getDefaultOptions(array $options = []): array
+    {
+        // Merge the options.
+        return array_replace_recursive([
+            'auth' => [
+                $this->config['credentials']['username'],
+                $this->config['credentials']['password']
+            ]
+        ], $options);
+    }
+
+    /**
      * Build the request URL.
      *
      * @param  string|array  $resource  The API resource.
@@ -304,9 +309,6 @@ class RacingAPIClient extends Client implements ClientInterface
      */
     public function buildUrl(string|array $resource): string
     {
-        $uri = is_array($resource) ? $resource[0] : $resource;
-        $resource = is_array($resource) ? $resource[1] : '';
-
-        return parent::buildUrl($uri.'/'.$this->config['base_url']).'/'.$resource;
+        return $this->config['base_url'].$resource;
     }
 }
