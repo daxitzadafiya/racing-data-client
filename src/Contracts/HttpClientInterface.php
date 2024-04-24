@@ -1,6 +1,6 @@
 <?php
 
-namespace RacingData\Contracts;
+namespace RacingDataClient\Contracts;
 
 interface HttpClientInterface
 {
